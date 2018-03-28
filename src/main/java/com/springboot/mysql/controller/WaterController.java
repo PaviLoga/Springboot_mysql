@@ -1,5 +1,8 @@
 package com.springboot.mysql.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +39,17 @@ public String welcome()
 		waterRepository.deleteById(id);
 		return "emptied water in the tank";
 	}
-	
+	@RequestMapping("/getall")
+	public List<UseWater> getall()
+	{
+		List<UseWater> allwater=new ArrayList<>();
+		waterRepository.findAll().forEach(allwater::add);
+		return allwater;
+	}
+	@RequestMapping(value="/update/{id}",method=RequestMethod.PUT)
+	public void update(@RequestBody UseWater usewater,@PathVariable Integer id)
+	{
+		usewater.setId(id);
+		waterRepository.save(usewater);
+	}               
 }
